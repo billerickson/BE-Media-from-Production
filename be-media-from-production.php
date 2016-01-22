@@ -42,7 +42,7 @@ class BE_Media_From_Production {
 	 * Production URL
 	 *
 	 */
-	public $production_url = 'http://blog.dupontregistry.com';
+	public $production_url = '';
 
 	/**
 	 * Holds list of upload directories
@@ -131,6 +131,9 @@ class BE_Media_From_Production {
 		
 		$upload_dirs = $this->directories;
 		if( empty( $upload_dirs ) )
+			return $image_url;
+			
+		if( empty( $this->production_url ) )
 			return $image_url;
 	
 		$exists = false;
