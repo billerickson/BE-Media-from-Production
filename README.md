@@ -21,8 +21,6 @@ Migrate over only a few months of uploads, and use this plugin to use the produc
 1. Edit the `$production_url` variable to contain the production URL of your website. 
 2. Edit the `$directories` variable to provide an array of upload directories ([example](https://gist.github.com/billerickson/bbfb0d2e467dc5591310)).
 **OR**
-Edit the `$start_month` and `$start_year` variables to specify the oldest upload directories you carried over. It will 
-automatically create `$directories` if left empty. This is useful if you'll be creating new content, so you don't have to keep
-editing the $directories variable with new months as the project goes on.
+Edit the `$start_month` and `$start_year` variables to specify the oldest upload directories you carried over. The plugin will automatically create `$directories` if left empty. This is useful if you'll be creating new content, so you don't have to keep editing the $directories variable with new months as the project goes on.
 3. Activate the plugin.
  
