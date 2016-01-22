@@ -41,24 +41,33 @@ class BE_Media_From_Production {
 	/**
 	 * Production URL
 	 *
+	 * @since 1.0.0
+	 * @var string
 	 */
 	public $production_url = '';
 
 	/**
 	 * Holds list of upload directories
 	 * Can set manually here, or allow function below to automatically create it
+	 *
+	 * @since 1.0.0
+	 * @var array
 	 */
 	public $directories = array();
 	
 	/**
 	 * Start Month
-	 *
+	 * 
+	 * @since 1.0.0
+	 * @var int
 	 */
 	public $start_month = 10;
 	
 	/**
 	 * Start Year 
 	 *
+	 * @since 1.0.0
+	 * @var int
 	 */
 	public $start_year = 2015;
 	
@@ -79,13 +88,9 @@ class BE_Media_From_Production {
 	}
 	
 	/**
-	 * Production URL
-	 *
-	 */
-	
-	/**
 	 * Set upload directories
 	 *
+	 * @since 1.0.0
 	 */
 	function set_upload_directories() {
 		
@@ -97,6 +102,7 @@ class BE_Media_From_Production {
 	/**
 	 * Determine Upload Directories
 	 *
+	 * @since 1.0.0
 	 */
 	function get_upload_directories() {
 	
@@ -121,8 +127,40 @@ class BE_Media_From_Production {
 	}
 
 	/**
+	 * Modify Main Image URL
+	 *
+	 * @since 1.0.0
+	 * @param array $image
+	 * @return array $image
+	 */
+	function image_src( $image ) {
+	
+		$image[0] = $this->update_image_url( $image[0] );
+		return $image;
+				
+	}
+	
+	/**
+	 * Modify Image Attributes
+	 *
+	 * @since 1.0.0
+	 * @param array $attr
+	 * @return array $attr
+	 */
+	function image_attr( $attr ) {
+		
+		if( isset( $attr['srcset'] ) )
+			$attr['srcset'] = $this->update_image_url( $attr['srcset'] );
+		return $attr;
+
+	}
+
+	/**
 	 * Update Image URL
 	 *
+	 * @since 1.0.0
+	 * @param string $image_url
+	 * @return string $image_url
 	 */
 	function update_image_url( $image_url ) {
 
@@ -148,27 +186,6 @@ class BE_Media_From_Production {
 		return $image_url;
 	}
 	
-	/**
-	 * Update Image URL
-	 *
-	 */
-	function image_src( $image ) {
-	
-		$image[0] = $this->update_image_url( $image[0] );
-		return $image;
-				
-	}
-	
-	/**
-	 * Update Image Attributes
-	 *
-	 */
-	function image_attr( $attr ) {
-		
-		if( isset( $attr['srcset'] ) )
-			$attr['srcset'] = $this->update_image_url( $attr['srcset'] );
-		return $attr;
-
-	}
 }
+
 new BE_Media_From_Production;
