@@ -19,10 +19,10 @@ Migrate over only a few months of uploads, and use this plugin to use the produc
 The simplest method is to set the start month and year of the oldest upload directory you carried over. The plugin will automatically create the list of all directories following that. Alternatively, you can manually provide a list of directories to include.
 
 Available Filters:
-be_media_from_production_url - Specify the Production URL
-be_media_from_production_start_month - Specify the Start Month
-be_media_from_production_start_year - Specify the Start Year
-be_media_from_production_directories - Manually set the upload directories to use
+* `be_media_from_production_url` - Specify the Production URL
+* `be_media_from_production_start_month` - Specify the Start Month
+* `be_media_from_production_start_year` - Specify the Start Year
+* `be_media_from_production_directories` - Manually set the upload directories to use
 
 ## Installation
 
