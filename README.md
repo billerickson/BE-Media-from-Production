@@ -3,7 +3,7 @@
 Contributors: billerickson  
 Requires at least: 3.9  
 Tested up to: 4.4.1  
-Stable tag: 1.0.0  
+Stable tag: 1.1.0  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -16,11 +16,16 @@ or staging environment, but you also don't want to see broken images throughout 
 
 Migrate over only a few months of uploads, and use this plugin to use the production site's URL for all other images.
 
+The simplest method is to set the start month and year of the oldest upload directory you carried over. The plugin will automatically create the list of all directories following that. Alternatively, you can manually provide a list of directories to include.
+
+Available Filters:
+be_media_from_production_url - Specify the Production URL
+be_media_from_production_start_month - Specify the Start Month
+be_media_from_production_start_year - Specify the Start Year
+be_media_from_production_directories - Manually set the upload directories to use
+
 ## Installation
 
-1. Edit the `$production_url` variable to contain the production URL of your website. 
-2. Edit the `$directories` variable to provide an array of upload directories ([example](https://gist.github.com/billerickson/bbfb0d2e467dc5591310)).
-**OR**
-Edit the `$start_month` and `$start_year` variables to specify the oldest upload directories you carried over. The plugin will automatically create `$directories` if left empty. This is useful if you'll be creating new content, so you don't have to keep editing the $directories variable with new months as the project goes on.
-3. Activate the plugin.
- 
+Option 1: In your theme or core functionality plugin, specify the Production URL, Start Month and End Month using the provided filters. [Example](https://gist.github.com/billerickson/dd6639cc11e4464512e4)
+
+Option 2: In your theme or core functionality plugin, specify the Production URL and specific directories using the provided filters. [Example](https://gist.github.com/billerickson/d4365166ba004bb45e9a)

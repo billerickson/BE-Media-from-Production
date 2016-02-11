@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.0.0
+ * Version:     1.1.0
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
@@ -107,8 +107,8 @@ class BE_Media_From_Production {
 	function get_upload_directories() {
 	
 		// Include all upload directories starting from a specific month and year
-		$month = $this->start_month;
-		$year = $this->start_year;
+		$month = apply_filters( 'be_media_from_production_start_month', $this->start_month );
+		$year = apply_filters( 'be_media_from_production_start_year', $this->start_year );
 	
 		$upload_dirs = array();
 
@@ -122,7 +122,7 @@ class BE_Media_From_Production {
 			$month = str_pad( $month, 2, '0', STR_PAD_LEFT );
 		}
 		
-		return $upload_dirs;
+		return apply_filters( 'be_media_from_production_directories', $upload_dirs );
 			
 	}
 
@@ -170,8 +170,9 @@ class BE_Media_From_Production {
 		$upload_dirs = $this->directories;
 		if( empty( $upload_dirs ) )
 			return $image_url;
-			
-		if( empty( $this->production_url ) )
+		
+		$production_url = esc_url( apply_filters( 'be_media_from_production_url', $this->production_url ) );
+		if( empty( $production_url ) )
 			return $image_url;
 	
 		$exists = false;
@@ -180,7 +181,7 @@ class BE_Media_From_Production {
 				$exists = true;
 		
 		if( ! $exists ) {
-			$image_url = str_replace( home_url(), $this->production_url, $image_url );
+			$image_url = str_replace( home_url(), $production_url, $image_url );
 		}
 			
 		return $image_url;
