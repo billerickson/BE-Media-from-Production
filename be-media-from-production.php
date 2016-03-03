@@ -61,7 +61,7 @@ class BE_Media_From_Production {
 	 * @since 1.0.0
 	 * @var int
 	 */
-	public $start_month = 10;
+	public $start_month = false;
 	
 	/**
 	 * Start Year 
@@ -69,7 +69,7 @@ class BE_Media_From_Production {
 	 * @since 1.0.0
 	 * @var int
 	 */
-	public $start_year = 2015;
+	public $start_year = false;
 	
 	/**
 	 * Primary constructor.
