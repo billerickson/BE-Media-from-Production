@@ -165,7 +165,7 @@ class BE_Media_From_Production {
 	 */
 	function image_content( $content ) {
 		$regex = '/https?\:\/\/[^\" ]+/i';
-        preg_match_all($regex, $content, $matches);
+		preg_match_all($regex, $content, $matches);
 		foreach( $matches[0] as $url ) {
 			if( strpos( $url, 'wp-content/uploads' ) ) {
 				$new_url = $this->update_image_url( $url );
