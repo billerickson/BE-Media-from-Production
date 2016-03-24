@@ -138,7 +138,8 @@ class BE_Media_From_Production {
 	 */
 	function image_src( $image ) {
 	
-		$image[0] = $this->update_image_url( $image[0] );
+		if( isset( $image[0] ) )
+			$image[0] = $this->update_image_url( $image[0] );
 		return $image;
 				
 	}
