@@ -113,14 +113,16 @@ class BE_Media_From_Production {
 	
 		$upload_dirs = array();
 
-		for( $i = 0; $year . $month <= date( 'Ym' ); $i++ ) {
-			$upload_dirs[] = $year . '/' . $month;
-			$month++;
-			if( 13 == $month ) {
-				$month = 1;
-				$year++;
+		if( $month && $year ) {
+			for( $i = 0; $year . $month <= date( 'Ym' ); $i++ ) {
+				$upload_dirs[] = $year . '/' . $month;
+				$month++;
+				if( 13 == $month ) {
+					$month = 1;
+					$year++;
+				}
+				$month = str_pad( $month, 2, '0', STR_PAD_LEFT );
 			}
-			$month = str_pad( $month, 2, '0', STR_PAD_LEFT );
 		}
 		
 		return apply_filters( 'be_media_from_production_directories', $upload_dirs );
@@ -187,19 +189,20 @@ class BE_Media_From_Production {
 		if( ! $image_url )
 			return $image_url;
 		
-		$upload_dirs = $this->directories;
-		if( empty( $upload_dirs ) )
-			return $image_url;
-		
 		$production_url = esc_url( apply_filters( 'be_media_from_production_url', $this->production_url ) );
 		if( empty( $production_url ) )
 			return $image_url;
 	
 		$exists = false;
-		foreach( $upload_dirs as $option )
-			if( strpos( $image_url, $option ) )
-				$exists = true;
-		
+		$upload_dirs = $this->directories;
+		if( $upload_dirs ) {		
+			foreach( $upload_dirs as $option ) {
+				if( strpos( $image_url, $option ) ) {
+					$exists = true;
+				}
+			}
+		}
+				
 		if( ! $exists ) {
 			$image_url = str_replace( home_url(), $production_url, $image_url );
 		}
