@@ -108,7 +108,7 @@ class BE_Media_From_Production {
 	function get_upload_directories() {
 	
 		// Include all upload directories starting from a specific month and year
-		$month = apply_filters( 'be_media_from_production_start_month', $this->start_month );
+		$month = str_pad( apply_filters( 'be_media_from_production_start_month', $this->start_month ), 2, 0, STR_PAD_LEFT );
 		$year = apply_filters( 'be_media_from_production_start_year', $this->start_year );
 	
 		$upload_dirs = array();
@@ -121,7 +121,7 @@ class BE_Media_From_Production {
 					$month = 1;
 					$year++;
 				}
-				$month = str_pad( $month, 2, '0', STR_PAD_LEFT );
+				$month = str_pad( $month, 2, 0, STR_PAD_LEFT );
 			}
 		}
 		
