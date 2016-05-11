@@ -18,7 +18,9 @@ This plugin lets you use the production server for some or all of the media.
 
 The simplest method (Option 1) is to use production for all media - you simply define the production URL.
 
-You can also migrate over a few months of uploads, and use this plugin to use the production site's URL for all other images. You can manually provide a list of directories to include (Option 2). Or you can set the start month and year of the oldest upload directory you carried over, and the plugin will automatically create the list of all directories following that (Option 3).
+You can also migrate over a few months of uploads, and use the production site's URL for all other images. You can manually provide a list of directories to include (Option 2). Or you can set the start month and year of the oldest upload directory you carried over, and the plugin will automatically create the list of all directories following that (Option 3). 
+
+This last option is useful if you'll be creating content in your development environment, so that each month you won't have to edit the list of local upload directories.
 
 Available Filters:
 * `be_media_from_production_url` - Specify the Production URL
