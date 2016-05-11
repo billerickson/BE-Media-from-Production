@@ -26,7 +26,7 @@ Available Filters:
 
 ## Installation
 
-Option 1: In your theme or core functionality plugin, specify the Production URL. [Example](https://gist.github.com/billerickson/74b71dae3adccd2d478c77c5a5dbe00a)
+Option 1: In your theme or core functionality plugin, specify the Production URL. This will use the production server for ALL media. [Example](https://gist.github.com/billerickson/74b71dae3adccd2d478c77c5a5dbe00a)
 
 Option 2: In your theme ore core functionality plugin, specify the Production URL, Start Month and End Month using the provided filters. [Example](https://gist.github.com/billerickson/dd6639cc11e4464512e4)
 
