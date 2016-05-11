@@ -14,9 +14,9 @@ Uses local media when available, and uses the production server for the rest.
 When redesigning a website with a large uploads directory, you might not need all those uploads in your development 
 or staging environment, but you also don't want to see broken images throughout the site. 
 
-Migrate over only a few months of uploads, and use this plugin to use the production site's URL for all other images.
+The simplest method is to use production for all media - you simply define the production URL.
 
-The simplest method is to set the start month and year of the oldest upload directory you carried over. The plugin will automatically create the list of all directories following that. Alternatively, you can manually provide a list of directories to include.
+You can also migrate over a few months of uploads, and use this plugin to use the production site's URL for all other images. You can manually provide a list of directories to include. Or you can set the start month and year of the oldest upload directory you carried over, and the plugin will automatically create the list of all directories following that.
 
 Available Filters:
 * `be_media_from_production_url` - Specify the Production URL
@@ -26,6 +26,8 @@ Available Filters:
 
 ## Installation
 
-Option 1: In your theme or core functionality plugin, specify the Production URL, Start Month and End Month using the provided filters. [Example](https://gist.github.com/billerickson/dd6639cc11e4464512e4)
+Option 1: In your theme or core functionality plugin, specify the Production URL. [Example](https://gist.github.com/billerickson/74b71dae3adccd2d478c77c5a5dbe00a)
 
-Option 2: In your theme or core functionality plugin, specify the Production URL and specific directories using the provided filters. [Example](https://gist.github.com/billerickson/d4365166ba004bb45e9a)
+Option 2: In your theme ore core functionality plugin, specify the Production URL, Start Month and End Month using the provided filters. [Example](https://gist.github.com/billerickson/dd6639cc11e4464512e4)
+
+Option 3: In your theme or core functionality plugin, specify the Production URL and specific directories using the provided filters. [Example](https://gist.github.com/billerickson/d4365166ba004bb45e9a)
