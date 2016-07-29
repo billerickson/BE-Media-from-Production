@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.2.0
+ * Version:     1.3.0
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
@@ -84,6 +84,7 @@ class BE_Media_From_Production {
 		// Update Image URLs
 		add_filter( 'wp_get_attachment_image_src',        array( $this, 'image_src'              )     );
 		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'image_attr'             ), 99 );
+		add_filter( 'wp_prepare_attachment_for_js',       array( $this, 'image_js'               ), 10, 3 );
 		add_filter( 'the_content',                        array( $this, 'image_content'          )     );
 		
 	}
@@ -159,6 +160,28 @@ class BE_Media_From_Production {
 
 	}
 	
+	/**
+	 * Modify Image for Javascript
+	 * Primarily used for media library
+	 *
+	 * @since 1.3.0
+	 * @param array      $response   Array of prepared attachment data
+	 * @param int|object $attachment Attachment ID or object
+	 * @param array      $meta       Array of attachment metadata
+	 * @return array     $response   Modified attachment data
+	 */
+	function image_js( $response, $attachment, $meta ) {
+	
+		if( isset( $response['url'] ) )
+			$response['url'] = $this->update_image_url( $response['url'] );
+		
+		foreach( $response['sizes'] as &$size ) {
+			$size['url'] = $this->update_image_url( $size['url'] );
+		}	
+			
+		return $response;
+	}
+
 	/**
 	 * Modify Images in Content
 	 *
