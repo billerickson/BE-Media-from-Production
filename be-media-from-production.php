@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.3.0
+ * Version:     1.4.0
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
@@ -190,15 +190,42 @@ class BE_Media_From_Production {
 	 * @return string $content
 	 */
 	function image_content( $content ) {
+		$upload_locations = wp_upload_dir();
+
 		$regex = '/https?\:\/\/[^\" ]+/i';
 		preg_match_all($regex, $content, $matches);
+
 		foreach( $matches[0] as $url ) {
-			if( strpos( $url, 'wp-content/uploads' ) ) {
+			if( false !== strpos( $url, $upload_locations[ 'baseurl' ] ) ) {
 				$new_url = $this->update_image_url( $url );
 				$content = str_replace( $url, $new_url, $content );
 			}
 		}
 		return $content;
+	}
+
+	/**
+	 * Convert a URL to a local filename
+	 *
+	 * @since 1.4.0
+	 * @param string $url
+	 * @return string $local_filename
+	 */
+	function local_filename( $url ) {
+		$upload_locations = wp_upload_dir();
+		$local_filename = str_replace( $upload_locations[ 'baseurl' ], $upload_locations[ 'basedir' ], $url );
+		return $local_filename;
+	}
+
+	/**
+	 * Determine if local image exists
+	 *
+	 * @since 1.4.0
+	 * @param string $url
+	 * @return boolean
+	 */
+	function local_image_exists( $url ) {
+		return file_exists( $this->local_filename( $url ) );
 	}
 
 	/**
@@ -212,6 +239,10 @@ class BE_Media_From_Production {
 
 		if( ! $image_url )
 			return $image_url;
+
+		if ( $this->local_image_exists( $image_url ) ) {
+			return $image_url;
+		}
 		
 		$production_url = esc_url( apply_filters( 'be_media_from_production_url', $this->production_url ) );
 		if( empty( $production_url ) )
