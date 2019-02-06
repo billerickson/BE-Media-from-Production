@@ -86,7 +86,7 @@ class BE_Media_From_Production {
 		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'image_attr'             ), 99 );
 		add_filter( 'wp_prepare_attachment_for_js',       array( $this, 'image_js'               ), 10, 3 );
 		add_filter( 'the_content',                        array( $this, 'image_content'          )     );
-		
+		add_filter( 'wp_get_attachment_url',              array( $this, 'update_image_url'       )     );
 	}
 	
 	/**
