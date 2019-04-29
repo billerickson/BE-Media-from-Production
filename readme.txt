@@ -1,18 +1,15 @@
-# BE Media from Production
-
-Contributors: billerickson,magicroundabout  
+=== BE Media from Production ===
+Contributors: billerickson
+Tags: image, images, media, staging, local, development
 Requires at least: 4.3
-Tested up to: 5.2  
-Stable tag: 1.4.0  
-License: GPLv2 or later  
-License URI: http://www.gnu.org/licenses/gpl-2.0.html  
+Tested up to: 5.2
+Stable tag: 1.4.0
 
-Uses local media when available, and uses the production server for the rest.
+For developers - Uses local media when available, and uses the production server for the rest.
 
-## Description
+== Description ==
 
-When redesigning a website with a large uploads directory, you might not need all those uploads in your development
-or staging environment, but you also don't want to see broken images throughout the site.
+When redesigning a website with a large uploads directory, you might not need all those uploads in your development or staging environment, but you also don't want to see broken images throughout the site.
 
 This plugin lets you use the production server for some or all of the media.
 
@@ -24,13 +21,14 @@ This last option is useful if you'll be creating content in your development env
 
 In all cases, if a local file exists, it will be used in preference to the remote file.
 
-Available Filters:
+**Available Filters:**
+
 * `be_media_from_production_url` - Specify the Production URL
 * `be_media_from_production_start_month` - Specify the Start Month
 * `be_media_from_production_start_year` - Specify the Start Year
 * `be_media_from_production_directories` - Manually set the upload directories to use
 
-## Installation
+== Installation ==
 
 Option 1: In your theme or core functionality plugin, specify the Production URL. This will use the production server for ALL media. [Example](https://gist.github.com/billerickson/74b71dae3adccd2d478c77c5a5dbe00a)
 
