@@ -30,6 +30,11 @@ Available Filters:
 * `be_media_from_production_start_year` - Specify the Start Year
 * `be_media_from_production_directories` - Manually set the upload directories to use
 
+Available Constants:
+* `BE_MEDIA_FROM_PRODUCTION_URL` - Specify the Production URL
+* `BE_MEDIA_FROM_PRODUCTION_START_MONTH` - Specify the Start Month
+* `BE_MEDIA_FROM_PRODUCTION_START_YEAR` - Specify the Start Year
+
 ## Installation
 
 Option 1: In your theme or core functionality plugin, specify the Production URL. This will use the production server for ALL media. [Example](https://gist.github.com/billerickson/74b71dae3adccd2d478c77c5a5dbe00a)
@@ -37,3 +42,11 @@ Option 1: In your theme or core functionality plugin, specify the Production URL
 Option 2: In your theme or core functionality plugin, specify the Production URL and specific directories using the provided filters. [Example](https://gist.github.com/billerickson/d4365166ba004bb45e9a)
 
 Option 3: In your theme or core functionality plugin, specify the Production URL, Start Month and End Month using the provided filters. [Example](https://gist.github.com/billerickson/dd6639cc11e4464512e4)
+
+## Installation via WP-CLI and constants
+
+```
+wp config set BE_MEDIA_FROM_PRODUCTION_URL http://www.billerickson.net --type=constant
+wp config set BE_MEDIA_FROM_PRODUCTION_START_MONTH 01 --type=constant
+wp config set BE_MEDIA_FROM_PRODUCTION_START_YEAR 2016 --type=constant
+```
