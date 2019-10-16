@@ -249,9 +249,6 @@ class BE_Media_From_Production {
 		if( empty( $production_url ) )
 			return $image_url;
 	
-		if ( strpos( $image_url, $production_url ) === 0 )
-			return $image_url;
-		
 		$exists = false;
 		$upload_dirs = $this->directories;
 		if( $upload_dirs ) {		
@@ -263,7 +260,7 @@ class BE_Media_From_Production {
 		}
 				
 		if( ! $exists ) {
-			$image_url = str_replace( home_url(), $production_url, $image_url );
+			$image_url = str_replace( trailingslashit( home_url() ), trailingslashit( $production_url ), $image_url );
 		}
 			
 		return $image_url;
