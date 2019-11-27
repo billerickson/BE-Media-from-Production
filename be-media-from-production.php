@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.4.0
+ * Version:     1.5.0
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
@@ -110,8 +110,8 @@ class BE_Media_From_Production {
 	function get_upload_directories() {
 	
 		// Include all upload directories starting from a specific month and year
-		$month = str_pad( apply_filters( 'be_media_from_production_start_month', $this->start_month ), 2, 0, STR_PAD_LEFT );
-		$year = apply_filters( 'be_media_from_production_start_year', $this->start_year );
+		$month = str_pad( $this->get_start_month(), 2, 0, STR_PAD_LEFT );
+		$year = $this->get_start_year();
 	
 		$upload_dirs = array();
 
@@ -245,7 +245,7 @@ class BE_Media_From_Production {
 			return $image_url;
 		}
 		
-		$production_url = esc_url( apply_filters( 'be_media_from_production_url', $this->production_url ) );
+		$production_url = esc_url( $this->get_production_url() );
 		if( empty( $production_url ) )
 			return $image_url;
 	
@@ -265,7 +265,54 @@ class BE_Media_From_Production {
 			
 		return $image_url;
 	}
-	
+
+	/**
+	 * Return the production URL
+	 *
+	 * First, this method checks if constant `BE_MEDIA_FROM_PRODUCTION_URL`
+	 * exists and non-empty. Than applies a filter `be_media_from_production_url`.
+	 *
+	 * @since 1.5.0
+	 * @return string
+	 */
+	public function get_production_url() {
+		$production_url = $this->production_url;
+		if ( defined( 'BE_MEDIA_FROM_PRODUCTION_URL' ) && BE_MEDIA_FROM_PRODUCTION_URL ) {
+			$production_url = BE_MEDIA_FROM_PRODUCTION_URL;
+		}
+
+		return apply_filters( 'be_media_from_production_url', $production_url );
+	}
+
+	/**
+	 * Return start month
+	 *
+	 * @since 1.5.0
+	 * @return string
+	 */
+	public function get_start_month() {
+		$start_month = $this->start_month;
+		if ( defined( 'BE_MEDIA_FROM_PRODUCTION_START_MONTH' ) && BE_MEDIA_FROM_PRODUCTION_START_MONTH ) {
+			$start_month = BE_MEDIA_FROM_PRODUCTION_START_MONTH;
+		}
+
+		return apply_filters( 'be_media_from_production_start_month', $start_month );
+	}
+
+	/**
+	 * Return start year
+	 *
+	 * @since 1.5.0
+	 * @return string
+	 */
+	public function get_start_year() {
+		$start_year = $this->start_year;
+		if ( defined( 'BE_MEDIA_FROM_PRODUCTION_START_YEAR' ) && BE_MEDIA_FROM_PRODUCTION_START_YEAR ) {
+			$start_year = BE_MEDIA_FROM_PRODUCTION_START_YEAR;
+		}
+
+		return apply_filters( 'be_media_from_production_start_year', $start_year );
+	}
 }
 
 new BE_Media_From_Production;
