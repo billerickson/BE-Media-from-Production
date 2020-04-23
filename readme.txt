@@ -38,3 +38,13 @@ add_filter( 'be_media_from_production_url', function() {
 wp plugin install --activate be-media-from-production
 wp config set BE_MEDIA_FROM_PRODUCTION_URL https://www.billerickson.net --type=constant
 ```
+
+**Using with WP Migrate DB Pro**
+
+[WP Migrate DB Pro](https://www.billerickson.net/go/wp-migrate-db-pro) is my preferred tool for pushing/pulling databases between environments. The Media addon allows you transfer media between environemnts along with the database.
+
+When redesigning a website, I keep all the media on my development server and push up new media uploads along with the database.
+
+Set up a "push" profile to push your local database to the development server. Make sure "Media Files" is checked and select "Compare, then upload".
+
+Set up a "pull" profile to pull the development database locally. Do not include media in your pull. Any missing media will be handled by BE Media from Production.
