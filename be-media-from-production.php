@@ -78,56 +78,12 @@ class BE_Media_From_Production {
 	 */
 	function __construct() {
 
-		// Set upload directories
-		add_action( 'init',                               array( $this, 'set_upload_directories' )     );
-
 		// Update Image URLs
 		add_filter( 'wp_get_attachment_image_src',        array( $this, 'image_src'              )     );
 		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'image_attr'             ), 99 );
 		add_filter( 'wp_prepare_attachment_for_js',       array( $this, 'image_js'               ), 10, 3 );
 		add_filter( 'the_content',                        array( $this, 'image_content'          )     );
 		add_filter( 'wp_get_attachment_url',              array( $this, 'update_image_url'       )     );
-
-	}
-
-	/**
-	 * Set upload directories
-	 *
-	 * @since 1.0.0
-	 */
-	function set_upload_directories() {
-
-		if( empty( $this->directories ) )
-			$this->directories = $this->get_upload_directories();
-
-	}
-
-	/**
-	 * Determine Upload Directories
-	 *
-	 * @since 1.0.0
-	 */
-	function get_upload_directories() {
-
-		// Include all upload directories starting from a specific month and year
-		$month = str_pad( $this->get_start_month(), 2, 0, STR_PAD_LEFT );
-		$year = $this->get_start_year();
-
-		$upload_dirs = array();
-
-		if( $month && $year ) {
-			for( $i = 0; $year . $month <= date( 'Ym' ); $i++ ) {
-				$upload_dirs[] = $year . '/' . $month;
-				$month++;
-				if( 13 == $month ) {
-					$month = 1;
-					$year++;
-				}
-				$month = str_pad( $month, 2, 0, STR_PAD_LEFT );
-			}
-		}
-
-		return apply_filters( 'be_media_from_production_directories', $upload_dirs );
 
 	}
 
@@ -254,20 +210,7 @@ class BE_Media_From_Production {
 		if( empty( $production_url ) )
 			return $image_url;
 
-		$exists = false;
-		$upload_dirs = $this->directories;
-		if( $upload_dirs ) {
-			foreach( $upload_dirs as $option ) {
-				if( strpos( $image_url, $option ) ) {
-					$exists = true;
-				}
-			}
-		}
-
-		if( ! $exists ) {
-			$image_url = str_replace( trailingslashit( home_url() ), trailingslashit( $production_url ), $image_url );
-		}
-
+		$image_url = str_replace( trailingslashit( home_url() ), trailingslashit( $production_url ), $image_url );
 		return $image_url;
 	}
 
@@ -287,36 +230,6 @@ class BE_Media_From_Production {
 		}
 
 		return apply_filters( 'be_media_from_production_url', $production_url );
-	}
-
-	/**
-	 * Return start month
-	 *
-	 * @since 1.5.0
-	 * @return string
-	 */
-	public function get_start_month() {
-		$start_month = $this->start_month;
-		if ( defined( 'BE_MEDIA_FROM_PRODUCTION_START_MONTH' ) && BE_MEDIA_FROM_PRODUCTION_START_MONTH ) {
-			$start_month = BE_MEDIA_FROM_PRODUCTION_START_MONTH;
-		}
-
-		return apply_filters( 'be_media_from_production_start_month', $start_month );
-	}
-
-	/**
-	 * Return start year
-	 *
-	 * @since 1.5.0
-	 * @return string
-	 */
-	public function get_start_year() {
-		$start_year = $this->start_year;
-		if ( defined( 'BE_MEDIA_FROM_PRODUCTION_START_YEAR' ) && BE_MEDIA_FROM_PRODUCTION_START_YEAR ) {
-			$start_year = BE_MEDIA_FROM_PRODUCTION_START_YEAR;
-		}
-
-		return apply_filters( 'be_media_from_production_start_year', $start_year );
 	}
 }
 
