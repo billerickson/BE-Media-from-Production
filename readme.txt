@@ -3,35 +3,38 @@ Contributors: billerickson
 Tags: image, images, media, staging, local, development
 Requires at least: 4.3
 Tested up to: 5.4
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 
 For developers - Uses local media when available, and uses the production server for the rest.
 
 == Description ==
 
-When redesigning a website with a large uploads directory, you might not need all those uploads in your development or staging environment, but you also don't want to see broken images throughout the site.
+When redesigning a website with a large uploads directory, you might not need all those uploads in your development
+or staging environment, but you also don't want to see broken images throughout the site.
 
-This plugin lets you use the production server for some or all of the media.
-
-The simplest method (Option 1) is to use production for all media - you simply define the production URL.
-
-You can also migrate over a few months of uploads, and use the production site's URL for all other images. You can manually provide a list of directories to include (Option 2). Or you can set the start month and year of the oldest upload directory you carried over, and the plugin will automatically create the list of all directories following that (Option 3).
-
-This last option is useful if you'll be creating content in your development environment, so that each month you won't have to edit the list of local upload directories.
+This plugin lets you use the production server for missing media. Define the production URL using a constant `BE_MEDIA_FROM_PRODUCTION_URL` or filter `be_media_from_production_url`.
 
 In all cases, if a local file exists, it will be used in preference to the remote file.
 
-**Available Filters:**
-
-* `be_media_from_production_url` - Specify the Production URL
-* `be_media_from_production_start_month` - Specify the Start Month
-* `be_media_from_production_start_year` - Specify the Start Year
-* `be_media_from_production_directories` - Manually set the upload directories to use
-
 == Installation ==
 
-Option 1: In your theme or core functionality plugin, specify the Production URL. This will use the production server for ALL media. [Example](https://gist.github.com/billerickson/74b71dae3adccd2d478c77c5a5dbe00a)
+Once the plugin is installed, add the following constant to wp-config.php with your production URL.
 
-Option 2: In your theme or core functionality plugin, specify the Production URL and specific directories using the provided filters. [Example](https://gist.github.com/billerickson/d4365166ba004bb45e9a)
+```
+define( 'BE_MEDIA_FROM_PRODUCTION_URL', 'https://www.billerickson.net' );
+```
 
-Option 3: In your theme or core functionality plugin, specify the Production URL, Start Month and End Month using the provided filters. [Example](https://gist.github.com/billerickson/dd6639cc11e4464512e4)
+Alternatively, you can use the filter in your theme's functions.php file, a core functionality plugin, or a mu-plugin:
+
+```
+add_filter( 'be_media_from_production_url', function() {
+	return 'https://www.billerickson.net';
+});
+```
+
+**Installation via WP-CLI and constants**
+
+```
+wp plugin install --activate be-media-from-production
+wp config set BE_MEDIA_FROM_PRODUCTION_URL https://www.billerickson.net --type=constant
+```
