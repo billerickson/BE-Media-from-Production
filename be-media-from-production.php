@@ -47,31 +47,6 @@ class BE_Media_From_Production {
 	public $production_url = '';
 
 	/**
-	 * Holds list of upload directories
-	 * Can set manually here, or allow function below to automatically create it
-	 *
-	 * @since 1.0.0
-	 * @var array
-	 */
-	public $directories = array();
-
-	/**
-	 * Start Month
-	 *
-	 * @since 1.0.0
-	 * @var int
-	 */
-	public $start_month = false;
-
-	/**
-	 * Start Year
-	 *
-	 * @since 1.0.0
-	 * @var int
-	 */
-	public $start_year = false;
-
-	/**
 	 * Primary constructor.
 	 *
 	 * @since 1.0.0
