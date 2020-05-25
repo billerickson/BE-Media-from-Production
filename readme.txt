@@ -16,6 +16,8 @@ This plugin lets you use the production server for missing media. Define the pro
 
 In all cases, if a local file exists, it will be used in preference to the remote file.
 
+*Pull requests are welcome at [GitHub](https://github.com/billerickson/BE-Media-from-Production).*
+
 == Installation ==
 
 Once the plugin is installed, add the following constant to wp-config.php with your production URL.
