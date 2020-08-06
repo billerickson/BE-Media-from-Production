@@ -129,7 +129,7 @@ class BE_Media_From_Production {
 	function image_content( $content ) {
 		$upload_locations = wp_upload_dir();
 
-		$regex = '/https?\:\/\/[^\" ]+/i';
+		$regex = '/https?\:\/\/[^\") ]+/i';
 		preg_match_all($regex, $content, $matches);
 
 		foreach( $matches[0] as $url ) {
