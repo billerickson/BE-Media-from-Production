@@ -201,7 +201,7 @@ class BE_Media_From_Production {
 	public function get_production_url() {
 		$production_url = $this->production_url;
 		if ( defined( 'BE_MEDIA_FROM_PRODUCTION_URL' ) && BE_MEDIA_FROM_PRODUCTION_URL ) {
-			$production_url = BE_MEDIA_FROM_PRODUCTION_URL;
+			return $production_url = BE_MEDIA_FROM_PRODUCTION_URL;
 		}
 
 		return apply_filters( 'be_media_from_production_url', $production_url );
