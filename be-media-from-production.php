@@ -47,6 +47,31 @@ class BE_Media_From_Production {
 	public $production_url = '';
 
 	/**
+	 * Holds list of upload directories
+	 * Can set manually here, or allow function below to automatically create it
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	public $directories = array();
+
+	/**
+	 * Start Month
+	 *
+	 * @since 1.0.0
+	 * @var int
+	 */
+	public $start_month = false;
+
+	/**
+	 * Start Year
+	 *
+	 * @since 1.0.0
+	 * @var int
+	 */
+	public $start_year = false;
+
+	/**
 	 * Primary constructor.
 	 *
 	 * @since 1.0.0
@@ -129,7 +154,7 @@ class BE_Media_From_Production {
 	function image_content( $content ) {
 		$upload_locations = wp_upload_dir();
 
-		$regex = '/https?\:\/\/[^\") ]+/i';
+		$regex = '/https?\:\/\/[^\" ]+/i';
 		preg_match_all($regex, $content, $matches);
 
 		foreach( $matches[0] as $url ) {
