@@ -22,26 +22,24 @@ In all cases, if a local file exists, it will be used in preference to the remot
 
 Once the plugin is installed, add the following constant to wp-config.php with your production URL.
 
-```php
+```
 define( 'BE_MEDIA_FROM_PRODUCTION_URL', 'https://www.billerickson.net' );
 ```
 
 Alternatively, you can use the filter in your theme's functions.php file, a core functionality plugin, or a mu-plugin:
 
-```php
-add_filter(
-	'be_media_from_production_url',
-	function () {
-		return 'https://www.billerickson.net';
-	}
-);
 ```
+add_filter( 'be_media_from_production_url', function() {
+	return 'https://www.billerickson.net';
+});
+```
+
 
 ## Installation via WP-CLI and constants
 
-```bash
-wp config set BE_MEDIA_FROM_PRODUCTION_URL "https://www.billerickson.net" --type=constant
+```
 wp plugin install --activate be-media-from-production
+wp config set BE_MEDIA_FROM_PRODUCTION_URL https://www.billerickson.net --type=constant
 ```
 
 ## Using with WP Migrate DB Pro
