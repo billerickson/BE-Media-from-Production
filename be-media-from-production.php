@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.6.0
+ * Version:     1.7.0
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
@@ -82,6 +82,7 @@ class BE_Media_From_Production {
 		add_filter( 'wp_get_attachment_image_src',        array( $this, 'image_src'              )     );
 		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'image_attr'             ), 99 );
 		add_filter( 'wp_prepare_attachment_for_js',       array( $this, 'image_js'               ), 10, 3 );
+		add_filter( 'wp_content_img_tag',       	      array( $this, 'image_tag'              ), 10, 3 );
 		add_filter( 'the_content',                        array( $this, 'image_content'          )     );
 		add_filter( 'wp_get_attachment_url',              array( $this, 'update_image_url'       )     );
 
@@ -142,6 +143,30 @@ class BE_Media_From_Production {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Modify Image Tags
+	 *
+	 * @since 1.7.0
+	 * @param string $filtered_image Full img tag with attributes that will replace the source img tag.
+	 * @param string $context        Additional context, like the current filter name or the function name from where this was called.
+	 * @param int    $attachment_id  The image attachment ID. May be 0 in case the image is not an attachment.
+	 */
+	function image_tag( $filtered_image, $context, $attachment_id ) {
+		$upload_locations = wp_upload_dir();
+
+		$regex = '/https?\:\/\/[^\" ]+/i';
+		preg_match_all($regex, $filtered_image, $matches);
+
+		foreach( $matches[0] as $url ) {
+			if( false !== strpos( $url, $upload_locations[ 'baseurl' ] ) ) {
+				$new_url = $this->update_image_url( $url );
+				$filtered_image = str_replace( $url, $new_url, $filtered_image );
+			}
+		}
+
+		return $filtered_image;
 	}
 
 	/**
