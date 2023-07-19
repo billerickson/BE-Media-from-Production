@@ -44,7 +44,7 @@ wp config set BE_MEDIA_FROM_PRODUCTION_URL https://www.billerickson.net --type=c
 
 ## Using with WP Migrate
 
-[WP Migrate](https://www.billerickson.net/go/wp-migrate-db-pro) is my preferred tool for pushing/pulling databases between environments. The Media addon allows you transfer media between environemnts along with the database.
+[WP Migrate](https://deliciousbrains.com/wp-migrate-db-pro/) is my preferred tool for pushing/pulling databases between environments. The media files functionality allows you to transfer media between environments along with the database.
 
 When redesigning a website, I keep all the media on my development server and push up new media uploads along with the database.
 
