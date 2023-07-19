@@ -79,12 +79,13 @@ class BE_Media_From_Production {
 	function __construct() {
 
 		// Update Image URLs
-		add_filter( 'wp_get_attachment_image_src',        array( $this, 'image_src'              )     );
-		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'image_attr'             ), 99 );
+		add_filter( 'wp_get_attachment_image_src',        array( $this, 'image_src'              )        );
+		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'image_attr'             ), 99    );
 		add_filter( 'wp_prepare_attachment_for_js',       array( $this, 'image_js'               ), 10, 3 );
 		add_filter( 'wp_content_img_tag',       	      array( $this, 'image_tag'              ), 10, 3 );
-		add_filter( 'the_content',                        array( $this, 'image_content'          )     );
-		add_filter( 'wp_get_attachment_url',              array( $this, 'update_image_url'       )     );
+		add_filter( 'the_content',                        array( $this, 'image_content'          )        );
+		add_filter( 'wp_get_attachment_url',              array( $this, 'update_image_url'       )        );
+		add_filter( 'the_post',                           array( $this, 'update_post_content'    )        );
 
 	}
 
@@ -237,6 +238,14 @@ class BE_Media_From_Production {
 
 		$image_url = str_replace( trailingslashit( home_url() ), trailingslashit( $production_url ), $image_url );
 		return $image_url;
+	}
+
+	/**
+	 * Update Post Content
+	 */
+	function update_post_content( $post ) {
+		$post->post_content = $this->image_content( $post->post_content );
+		return $post;
 	}
 
 	/**
