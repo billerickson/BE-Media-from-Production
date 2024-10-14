@@ -87,6 +87,9 @@ class BE_Media_From_Production {
 		add_filter( 'wp_get_attachment_url',              array( $this, 'update_image_url'       )        );
 		add_filter( 'the_post',                           array( $this, 'update_post_content'    )        );
 
+		// Plugin updates
+		add_action( 'init', array( $this, 'updates' ) );
+
 	}
 
 	/**
@@ -265,6 +268,23 @@ class BE_Media_From_Production {
 
 		return apply_filters( 'be_media_from_production_url', $production_url );
 	}
+
+	/**
+	 * Plugin updates via GitHub
+	 */
+	public function updates() {
+		require dirname( __FILE__ ) . '/updater/plugin-update-checker.php';
+ 
+		$myUpdateChecker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+			'https://github.com/billerickson/be-media-from-production',
+			__FILE__,
+			'be-media-from-production'
+		);
+		
+		//Set the branch that contains the stable release.
+		$myUpdateChecker->setBranch('master');	
+	}
+
 }
 
 new BE_Media_From_Production;
