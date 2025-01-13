@@ -1,0 +1,12 @@
+{
+    "name": "billerickson/be-media-from-production",
+    "description": "Uses local media when available, and uses the production server for the rest.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "billerickson"
+        }
+    ],
+    "require": {}
+}
