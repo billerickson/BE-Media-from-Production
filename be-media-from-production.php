@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.8.0
+ * Version:     1.9.0
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
@@ -86,6 +86,7 @@ class BE_Media_From_Production {
 		add_filter( 'the_content',                        array( $this, 'image_content'          )        );
 		add_filter( 'wp_get_attachment_url',              array( $this, 'update_image_url'       )        );
 		add_filter( 'the_post',                           array( $this, 'update_post_content'    )        );
+		add_filter( 'get_avatar',                         array( $this, 'image_content'          )        );
 
 		// Plugin updates
 		add_action( 'init', array( $this, 'updates' ) );

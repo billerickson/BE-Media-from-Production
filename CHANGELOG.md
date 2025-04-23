@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.9.0] = 2025-04-23
+- Update image URLs inside `get_avatar`, useful when using locally hosted avatars (ex: Simple Local Avatars plugin)
+
 ## [1.8.0] = 2024-10-14
 ### Changed
 - Plugin updates come from GitHub now instead of WordPress.org
