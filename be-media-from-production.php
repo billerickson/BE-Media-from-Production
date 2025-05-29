@@ -240,7 +240,7 @@ class BE_Media_From_Production {
 		if( empty( $production_url ) )
 			return $image_url;
 
-		$image_url = str_replace( trailingslashit( home_url() ), trailingslashit( $production_url ), $image_url );
+		$image_url = str_replace( trailingslashit( site_url() ), trailingslashit( $production_url ), $image_url );
 		return $image_url;
 	}
 
