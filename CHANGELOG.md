@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.10.0] = 2025-06-10
+- Add support for WPML, see #26, props @delwin
+- Allow plugin to be updated when in mu-plugins directory, see #27, props @delwin
+- Filter image srcset, see #29, props @hansschuijff
+
 ## [1.9.0] = 2025-04-23
 - Update image URLs inside `get_avatar`, useful when using locally hosted avatars (ex: Simple Local Avatars plugin)
 

@@ -3,7 +3,7 @@
 Contributors: billerickson,magicroundabout  
 Requires at least: 4.3
 Tested up to: 6.8  
-Stable tag: 1.9.0  
+Stable tag: 1.10.0  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -38,7 +38,7 @@ add_filter( 'be_media_from_production_url', function() {
 ## Installation via WP-CLI and constants
 
 ```
-wp plugin install https://github.com/billerickson/be-media-from-production/archive/master.zip --force --activate
+wp plugin install https://github.com/billerickson/be-media-from-production/releases/latest/download/be-media-from-production.zip --force --activate
 wp config set BE_MEDIA_FROM_PRODUCTION_URL https://www.billerickson.net --type=constant
 ```
 

@@ -3,7 +3,7 @@ Contributors: billerickson
 Tags: image, images, media, staging, local, development
 Requires at least: 4.3
 Tested up to: 6.8
-Stable tag: 1.9.0
+Stable tag: 1.10.0
 
 For developers - Uses local media when available, and uses the production server for the rest.
 
@@ -35,7 +35,7 @@ add_filter( 'be_media_from_production_url', function() {
 **Installation via WP-CLI and constants**
 
 ```
-wp plugin install --activate be-media-from-production
+wp plugin install https://github.com/billerickson/be-media-from-production/releases/latest/download/be-media-from-production.zip --force --activate
 wp config set BE_MEDIA_FROM_PRODUCTION_URL https://www.billerickson.net --type=constant
 ```
 
