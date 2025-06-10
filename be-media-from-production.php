@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.9.0
+ * Version:     1.10.0
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
@@ -80,6 +80,7 @@ class BE_Media_From_Production {
 
 		// Update Image URLs
 		add_filter( 'wp_get_attachment_image_src',        array( $this, 'image_src'              )        );
+		add_filter( 'wp_calculate_image_srcset',          array( $this, 'image_srcset'           ), 99    );
 		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'image_attr'             ), 99    );
 		add_filter( 'wp_prepare_attachment_for_js',       array( $this, 'image_js'               ), 10, 3 );
 		add_filter( 'wp_content_img_tag',       	      array( $this, 'image_tag'              ), 10, 3 );
@@ -106,6 +107,23 @@ class BE_Media_From_Production {
 			$image[0] = $this->update_image_url( $image[0] );
 		return $image;
 
+	}
+
+	/**
+	 * Modify Image Sources
+	 *
+	 * @since 1.10.0
+	 * @param array|false $srcset
+	 * @return array|false $srcset
+	 */
+	function image_srcset( $srcset ) {
+		if( isset( $srcset ) ) {
+			foreach( $srcset as $i => $src ) {
+				$srcset[ $i ]['url'] = $this->update_image_url( $src['url'] );
+			}
+		}
+
+		return $srcset;
 	}
 
 	/**
@@ -275,15 +293,15 @@ class BE_Media_From_Production {
 	 */
 	public function updates() {
 		require dirname( __FILE__ ) . '/updater/plugin-update-checker.php';
- 
+
 		$myUpdateChecker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
 			'https://github.com/billerickson/be-media-from-production',
 			__FILE__,
 			'be-media-from-production'
 		);
-		
+
 		//Set the branch that contains the stable release.
-		$myUpdateChecker->setBranch('master');	
+		$myUpdateChecker->setBranch('master');
 	}
 
 }
