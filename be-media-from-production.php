@@ -297,7 +297,10 @@ class BE_Media_From_Production {
 		$myUpdateChecker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
 			'https://github.com/billerickson/be-media-from-production',
 			__FILE__,
-			'be-media-from-production'
+			'be-media-from-production',
+			12,
+			'',
+			__FILE__
 		);
 
 		//Set the branch that contains the stable release.
