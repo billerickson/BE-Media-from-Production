@@ -32,6 +32,14 @@ add_filter( 'be_media_from_production_url', function() {
 });
 ```
 
+In case you are running Bedrock, wp-starter or similar, you can use the following filter to modify the base url of your local website to make sure the image replacement works.
+
+```
+add_filter( 'be_media_from_production_local_site_url', function() {
+	return home_url();
+});
+```
+
 **Installation via WP-CLI and constants**
 
 ```
