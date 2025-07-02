@@ -257,8 +257,18 @@ class BE_Media_From_Production {
 		$production_url = esc_url( $this->get_production_url() );
 		if( empty( $production_url ) )
 			return $image_url;
-
-		$image_url = str_replace( trailingslashit( site_url() ), trailingslashit( $production_url ), $image_url );
+		
+	       /**
+		* Filters the home/site url of the local website
+		* 
+		* You can use this filter to modify the local site url if site_url() does not resolve to the actual website. This can be the case in a Bedrock based setup or similar.
+		*
+		* @param string $local_site_url the result of the site_url() function.
+		*
+		* @return string Updated local site url.
+		*/
+		$site_url  = apply_filters('be_media_from_production_local_site_url', site_url());
+ 		$image_url = str_replace(trailingslashit($site_url), trailingslashit($production_url), $image_url);
 		return $image_url;
 	}
 
