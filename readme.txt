@@ -3,7 +3,7 @@ Contributors: billerickson
 Tags: image, images, media, staging, local, development
 Requires at least: 4.3
 Tested up to: 6.8
-Stable tag: 1.10.0
+Stable tag: 1.11.0
 
 For developers - Uses local media when available, and uses the production server for the rest.
 

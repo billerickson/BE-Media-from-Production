@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.10.0
+ * Version:     1.11.0
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
