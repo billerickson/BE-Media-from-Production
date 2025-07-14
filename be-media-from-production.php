@@ -117,7 +117,7 @@ class BE_Media_From_Production {
 	 * @return array|false $srcset
 	 */
 	function image_srcset( $srcset ) {
-		if( isset( $srcset ) ) {
+		if( isset( $srcset ) && $srcset !== false ) {
 			foreach( $srcset as $i => $src ) {
 				$srcset[ $i ]['url'] = $this->update_image_url( $src['url'] );
 			}
