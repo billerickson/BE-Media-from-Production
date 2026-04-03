@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.12.0] = 2026-04-03
+- Fix PHP 8.4+ compatibility by silencing nullable deprecations in the bundled updater, see #32
+
 ## [1.11.0] = 2025-07-14
 - Add filter `be_media_from_production_local_site_url` for customizing the local site URL, see #31, props @Levdbas
 - Fix PHP warning if srcset is empty, see #30, props 
