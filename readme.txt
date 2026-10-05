@@ -16,6 +16,10 @@ This plugin lets you use the production server for missing media. Define the pro
 
 In all cases, if a local file exists, it will be used in preference to the remote file.
 
+On WordPress 6.7+, other plugins can resolve this plugin's production uploads URLs with `attachment_url_to_postid()`. Exact attachment filenames, standard `-WIDTHxHEIGHT` sizes, and originals of `-scaled` attachments are supported. Fallback matches are validated against attachment metadata; arbitrary size names and file extension conversions are not guessed.
+
+These lookups run only when an attachment ID is requested. Normal media rewriting adds no database lookups. Recognized paths use one attachment-file query, with metadata accessed when needed for fallback validation. Hits and misses are cached only for the current request. Local URLs, unrelated origins, and earlier lookup-filter results retain their existing behavior. Older WordPress versions continue serving production media without reverse URL resolution.
+
 == Installation ==
 
 Once the plugin is installed, add the following constant to wp-config.php with your production URL.

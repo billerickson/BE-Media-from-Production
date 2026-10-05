@@ -72,6 +72,13 @@ class BE_Media_From_Production {
 	public $start_year = false;
 
 	/**
+	 * Attachment IDs and misses resolved during this request.
+	 *
+	 * @var array
+	 */
+	private $attachment_ids = array();
+
+	/**
 	 * Primary constructor.
 	 *
 	 * @since 1.0.0
@@ -88,6 +95,7 @@ class BE_Media_From_Production {
 		add_filter( 'wp_get_attachment_url',              array( $this, 'update_image_url'       )        );
 		add_filter( 'the_post',                           array( $this, 'update_post_content'    )        );
 		add_filter( 'get_avatar',                         array( $this, 'image_content'          )        );
+		add_filter( 'pre_attachment_url_to_postid',       array( $this, 'attachment_url_to_postid' ), 10, 2 );
 
 		// Plugin updates
 		add_action( 'init', array( $this, 'updates' ) );
@@ -296,6 +304,109 @@ class BE_Media_From_Production {
 		}
 
 		return apply_filters( 'be_media_from_production_url', $production_url );
+	}
+
+	/**
+	 * Resolve production uploads URLs only when an attachment lookup is requested.
+	 *
+	 * WordPress 6.7+ calls this filter before querying the attachment file path.
+	 * Local and unrelated URLs retain WordPress's normal lookup behavior.
+	 *
+	 * @param int|null $post_id An earlier filter's result, or null to continue.
+	 * @param string   $url     The attachment URL being looked up.
+	 * @return int|null Attachment ID, 0 for a recognized miss, or the original result.
+	 */
+	public function attachment_url_to_postid( $post_id, $url ) {
+		if ( null !== $post_id || ! is_string( $url ) ) {
+			return $post_id;
+		}
+
+		$production_url = esc_url( $this->get_production_url() );
+		if ( empty( $production_url ) ) {
+			return $post_id;
+		}
+
+		$uploads = wp_get_upload_dir();
+		$local_site_url = trailingslashit( apply_filters( 'be_media_from_production_local_site_url', site_url() ) );
+		$local_upload_url = trailingslashit( $uploads['baseurl'] );
+
+		// Only reverse an uploads prefix that update_image_url() can rewrite.
+		if ( 0 !== strpos( $local_upload_url, $local_site_url ) ) {
+			return $post_id;
+		}
+
+		$production_upload_url = trailingslashit( $production_url ) . substr( $local_upload_url, strlen( $local_site_url ) );
+		$scheme = wp_parse_url( $production_upload_url, PHP_URL_SCHEME );
+		if ( $production_upload_url === set_url_scheme( $local_upload_url, $scheme ) ) {
+			return $post_id;
+		}
+
+		// Match either HTTP scheme, and ignore URL query strings and fragments.
+		$url = set_url_scheme( $url, $scheme );
+		$url = substr( $url, 0, strcspn( $url, '?#' ) );
+		if ( 0 !== strpos( $url, $production_upload_url ) ) {
+			return $post_id;
+		}
+
+		$path = substr( $url, strlen( $production_upload_url ) );
+		$cache_key = get_current_blog_id() . ':' . $local_upload_url . ':' . $path;
+		if ( isset( $this->attachment_ids[ $cache_key ] ) ) {
+			return $this->attachment_ids[ $cache_key ];
+		}
+
+		// Query exact, original, and scaled filenames together, rather than retrying each.
+		$original = preg_replace( '/-\d+x\d+(?=\.[^\/.]+$)/', '', $path );
+		$paths = array( $path, $original );
+		if ( ! preg_match( '/-scaled\.[^\/.]+$/', $original ) ) {
+			$paths[] = preg_replace( '/(\.[^\/.]+)$/', '-scaled$1', $original );
+		}
+		$paths = array_values( array_unique( $paths ) );
+
+		global $wpdb;
+		$placeholders = implode( ', ', array_fill( 0, count( $paths ), '%s' ) );
+		$results = $wpdb->get_results( $wpdb->prepare(
+			"SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND meta_value IN ($placeholders)",
+			$paths
+		) );
+
+		$this->attachment_ids[ $cache_key ] = 0;
+		if ( empty( $results ) ) {
+			return 0;
+		}
+		foreach ( $paths as $candidate ) {
+			foreach ( $results as $result ) {
+				if ( $candidate !== $result->meta_value ) {
+					continue;
+				}
+
+				// An exact attachment filename always takes precedence over a size guess.
+				if ( $path === $candidate ) {
+					$this->attachment_ids[ $cache_key ] = (int) $result->post_id;
+					return $this->attachment_ids[ $cache_key ];
+				}
+
+				// Only accept fallback filenames recorded in this attachment's metadata.
+				$metadata = wp_get_attachment_metadata( $result->post_id, true );
+				$filename = wp_basename( $path );
+				$files = array();
+				if ( ! empty( $metadata['original_image'] ) ) {
+					$files[] = $metadata['original_image'];
+				}
+				if ( ! empty( $metadata['sizes'] ) && is_array( $metadata['sizes'] ) ) {
+					foreach ( $metadata['sizes'] as $size ) {
+						if ( isset( $size['file'] ) ) {
+							$files[] = $size['file'];
+						}
+					}
+				}
+				if ( in_array( $filename, $files, true ) ) {
+					$this->attachment_ids[ $cache_key ] = (int) $result->post_id;
+					return $this->attachment_ids[ $cache_key ];
+				}
+			}
+		}
+
+		return 0;
 	}
 
 	/**
