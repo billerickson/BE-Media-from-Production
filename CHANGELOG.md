@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
-## [Unreleased]
+## [1.13.0] = 2026-10-06
 - Resolve production uploads URLs to local attachment IDs on demand using WordPress 6.7+'s `pre_attachment_url_to_postid` filter.
 - Validate standard resized/scaled filename fallbacks against attachment metadata and cache successful and failed resolutions for the current request.
 
