@@ -3,7 +3,7 @@ Contributors: billerickson
 Tags: image, images, media, staging, local, development
 Requires at least: 4.3
 Tested up to: 6.8
-Stable tag: 1.12.0
+Stable tag: 1.13.0
 
 For developers - Uses local media when available, and uses the production server for the rest.
 
@@ -15,6 +15,10 @@ or staging environment, but you also don't want to see broken images throughout 
 This plugin lets you use the production server for missing media. Define the production URL using a constant `BE_MEDIA_FROM_PRODUCTION_URL` or filter `be_media_from_production_url`.
 
 In all cases, if a local file exists, it will be used in preference to the remote file.
+
+On WordPress 6.7+, other plugins can resolve this plugin's production uploads URLs with `attachment_url_to_postid()`. Exact attachment filenames, standard `-WIDTHxHEIGHT` sizes, and originals of `-scaled` attachments are supported. Fallback matches are validated against attachment metadata; arbitrary size names and file extension conversions are not guessed.
+
+These lookups run only when an attachment ID is requested. Normal media rewriting adds no database lookups. Recognized paths use one attachment-file query, with metadata accessed when needed for fallback validation. Hits and misses are cached only for the current request. Local URLs, unrelated origins, and earlier lookup-filter results retain their existing behavior. Older WordPress versions continue serving production media without reverse URL resolution.
 
 == Installation ==
 
