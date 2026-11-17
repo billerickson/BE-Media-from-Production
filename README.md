@@ -3,7 +3,7 @@
 Contributors: billerickson,magicroundabout  
 Requires at least: 4.3
 Tested up to: 6.8  
-Stable tag: 1.13.0\
+Stable tag: 1.13.1\
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -17,6 +17,8 @@ or staging environment, but you also don't want to see broken images throughout 
 This plugin lets you use the production server for missing media. Define the production URL using a constant `BE_MEDIA_FROM_PRODUCTION_URL` or filter `be_media_from_production_url`.
 
 In all cases, if a local file exists, it will be used in preference to the remote file.
+
+On WordPress 6.2+, images served from the configured production uploads URL use `referrerpolicy="same-origin"` so production hosts do not reject requests referred by a preview site. This covers content images, attachment images, and avatars without changing local or unrelated image policies.
 
 ## Attachment URL lookups
 

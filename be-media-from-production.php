@@ -5,7 +5,7 @@
  * Description: Uses local media when it's available, and uses the production server for rest.
  * Author:      Bill Erickson
  * Author URI:  http://www.billerickson.net
- * Version:     1.13.0
+ * Version:     1.13.1
  * Text Domain: be-media-from-production
  * Domain Path: languages
  *
@@ -96,6 +96,8 @@ class BE_Media_From_Production {
 		add_filter( 'the_post',                           array( $this, 'update_post_content'    )        );
 		add_filter( 'get_avatar',                         array( $this, 'image_content'          )        );
 		add_filter( 'pre_attachment_url_to_postid',       array( $this, 'attachment_url_to_postid' ), 10, 2 );
+
+		add_filter( 'wp_get_attachment_image', array( $this, 'image_referrer_policy' ), 20 );
 
 		// Plugin updates
 		add_action( 'init', array( $this, 'updates' ) );
@@ -197,7 +199,7 @@ class BE_Media_From_Production {
 			}
 		}
 
-		return $filtered_image;
+		return $this->image_referrer_policy( $filtered_image );
 	}
 
 	/**
@@ -219,7 +221,53 @@ class BE_Media_From_Production {
 				$content = str_replace( $url, $new_url, $content );
 			}
 		}
-		return $content;
+		return $this->image_referrer_policy( $content );
+	}
+
+	/**
+	 * Omit cross-site referrers only for images served from production uploads.
+	 *
+	 * Some production hosts block image requests referred by preview sites.
+	 * WordPress 6.2+ provides the HTML API needed to safely edit image tags.
+	 *
+	 * @param string $html Image or content markup.
+	 * @return string
+	 */
+	public function image_referrer_policy( $html ) {
+		if ( ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+			return $html;
+		}
+
+		$production_url = esc_url( $this->get_production_url() );
+		$local_site_url = trailingslashit( apply_filters( 'be_media_from_production_local_site_url', site_url() ) );
+		$uploads = wp_get_upload_dir();
+		$local_upload_url = trailingslashit( $uploads['baseurl'] );
+		if ( empty( $production_url ) || 0 !== strpos( $local_upload_url, $local_site_url ) ) {
+			return $html;
+		}
+
+		$production_upload_url = trailingslashit( $production_url ) . substr( $local_upload_url, strlen( $local_site_url ) );
+		$scheme = wp_parse_url( $production_upload_url, PHP_URL_SCHEME );
+		if ( $production_upload_url === set_url_scheme( $local_upload_url, $scheme ) ) {
+			return $html;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( $html );
+		while ( $processor->next_tag( 'IMG' ) ) {
+			foreach ( array( 'src', 'srcset' ) as $attribute ) {
+				$value = $processor->get_attribute( $attribute );
+				if ( ! is_string( $value ) ) {
+					continue;
+				}
+				foreach ( preg_split( '/[\s,]+/', $value ) as $url ) {
+					if ( 0 === strpos( set_url_scheme( $url, $scheme ), $production_upload_url ) ) {
+						$processor->set_attribute( 'referrerpolicy', 'same-origin' );
+						break 2;
+					}
+				}
+			}
+		}
+		return $processor->get_updated_html();
 	}
 
 	/**

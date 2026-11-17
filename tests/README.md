@@ -20,3 +20,13 @@ wp eval-file tests/attachment-url-to-postid.php /tmp/be-media-baseline.php --pat
 ```
 
 The baseline should fail the production-URL resolution and repeated-query checks. No PHPUnit installation or mock database is required.
+
+## Production image referrers
+
+`referrer-policy.php` is a read-only WordPress 6.2+ integration check. It exercises the content, avatar, and attachment image filters, production srcset candidates, URL rewriting, and local/unrelated/disabled fallback controls. It does not create media or database records.
+
+```bash
+wp eval-file tests/referrer-policy.php --path=/path/to/wordpress --skip-plugins --skip-themes
+```
+
+Pass a baseline plugin file as the first argument to demonstrate the missing referrer policy before the fix.
